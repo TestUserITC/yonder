@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  position: relative;
+  z-index: 2;
+  // Trims the strip sideways while its rotated corners still overlap the sections around it.
+  overflow-x: clip;
+}
+
+.tape {
+  width: 106%;
+  margin-left: -3%;
+  padding: 0.55rem 0;
+  overflow: hidden;
+  background: var(--signal);
+  color: var(--ink);
+  transform: rotate(-1.25deg);
+  box-shadow: 0 3px 10px rgb(23 19 14 / 28%);
+}
+
+.tape__track {
+  display: flex;
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: roll 60s linear infinite;
+}
+
+@keyframes roll {
+  to {
+    transform: translateX(-50%);
+  }
+}

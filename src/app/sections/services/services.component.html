@@ -1,0 +1,19 @@
+<section id="servicios" class="services">
+  <span class="section-ref">Tipos de envío</span>
+  <h2 class="section-title">Una etiqueta para cada mudanza.</h2>
+
+  <ul class="labels">
+    @for (service of services; track service.code) {
+      <li appReveal class="label" [style.transition-delay.ms]="$index * 90">
+        <p class="label__top">
+          <span>{{ service.code }}</span>
+          <span>Yonder</span>
+        </p>
+        <h3 class="label__title">{{ service.title }}</h3>
+        <p>{{ service.description }}</p>
+        <p class="label__handling">{{ service.handling }}</p>
+        <span class="label__barcode" aria-hidden="true"></span>
+      </li>
+    }
+  </ul>
+</section>

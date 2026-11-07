@@ -1,0 +1,104 @@
+.services {
+  padding: var(--section-space) var(--gutter);
+}
+
+.labels {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 6px 6px 0 rgb(23 19 14 / 85%);
+  rotate: var(--tilt, 0deg);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    rotate 0.2s ease;
+
+  &:hover {
+    rotate: 0deg;
+  }
+
+  // An uneven grid keeps the sheet from reading as a stock card layout.
+  &:nth-child(1) {
+    grid-column: span 7;
+    --tilt: -0.8deg;
+  }
+
+  &:nth-child(2) {
+    grid-column: span 5;
+    margin-top: 2.5rem;
+    --tilt: 1deg;
+  }
+
+  &:nth-child(3) {
+    grid-column: span 5;
+    --tilt: 0.7deg;
+  }
+
+  &:nth-child(4) {
+    grid-column: span 7;
+    margin-top: 1.5rem;
+    --tilt: -0.6deg;
+  }
+}
+
+.label__top {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.label__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.6vw, 3rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.label__handling {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.2rem 0.6rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.label__barcode {
+  height: 2.25rem;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0 2px,
+    transparent 2px 5px,
+    var(--ink) 5px 9px,
+    transparent 9px 11px,
+    var(--ink) 11px 12px,
+    transparent 12px 16px
+  );
+}
+
+@media (max-width: 760px) {
+  .label:nth-child(n) {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+}

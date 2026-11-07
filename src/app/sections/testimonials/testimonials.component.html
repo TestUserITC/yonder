@@ -1,0 +1,16 @@
+<section class="testimonials" aria-labelledby="testimonials-title">
+  <span class="section-ref">Conformidad de entrega · Testimonios de ejemplo</span>
+  <h2 id="testimonials-title" class="section-title">Firmado al recibir.</h2>
+
+  <div class="notes">
+    @for (testimonial of testimonials; track testimonial.author) {
+      <figure appReveal class="note" [style.transition-delay.ms]="$index * 100">
+        <blockquote>"{{ testimonial.quote }}"</blockquote>
+        <figcaption>
+          <strong>{{ testimonial.author }}</strong>
+          <span>{{ testimonial.route }}</span>
+        </figcaption>
+      </figure>
+    }
+  </div>
+</section>

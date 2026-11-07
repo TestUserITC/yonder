@@ -1,0 +1,9 @@
+<header class="header">
+  <a class="header__logo" href="#inicio">Yonder</a>
+  <nav class="header__nav" aria-label="Principal">
+    @for (link of links; track link.href) {
+      <a [href]="link.href">{{ link.label }}</a>
+    }
+  </nav>
+  <a class="header__cta" href="#cotizacion">Cotizar</a>
+</header>

@@ -1,0 +1,94 @@
+<section id="calculadora" class="calculator">
+  <span class="section-ref">Inventario</span>
+  <h2 class="section-title">¿Cuánto camión necesitas?</h2>
+  <p class="calculator__lead">Agrega lo que vas a mover y mira cómo se llena.</p>
+
+  <div class="calculator__grid">
+    <div class="sheet">
+      <ul class="items">
+        @for (item of items; track item.id) {
+          <li class="item">
+            <span class="item__name">{{ item.name }}</span>
+            <span class="item__volume">{{ item.volume | number: '1.1-1' }} m³</span>
+            <div class="stepper">
+              <button
+                type="button"
+                [attr.aria-label]="'Quitar ' + item.name"
+                [disabled]="calculator.quantityOf(item.id) === 0"
+                (click)="calculator.decrement(item.id)"
+              >
+                −
+              </button>
+              <output [attr.aria-label]="'Cantidad de ' + item.name">{{
+                calculator.quantityOf(item.id)
+              }}</output>
+              <button
+                type="button"
+                [attr.aria-label]="'Agregar ' + item.name"
+                (click)="calculator.increment(item.id)"
+              >
+                +
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+      <button
+        type="button"
+        class="button button--ghost sheet__reset"
+        [disabled]="calculator.totalItems() === 0"
+        (click)="calculator.reset()"
+      >
+        Vaciar camión
+      </button>
+    </div>
+
+    <div class="load" aria-live="polite">
+      <svg class="truck" viewBox="0 0 590 250" role="img" aria-label="Camión de mudanza">
+        <rect class="truck__box" x="16" y="24" width="424" height="176" />
+        @for (cell of cells(); track $index) {
+          <rect
+            class="truck__cell"
+            [class.truck__cell--filled]="cell.filled"
+            [attr.x]="cell.x"
+            [attr.y]="cell.y"
+            [attr.width]="cellWidth"
+            [attr.height]="cellHeight"
+          />
+        }
+        <path class="truck__cab" d="M448 72h62l58 62v66H448z" />
+        <path class="truck__window" d="M464 88h38l38 46h-76z" />
+        <circle class="truck__wheel" cx="100" cy="208" r="28" />
+        <circle class="truck__hub" cx="100" cy="208" r="10" />
+        <circle class="truck__wheel" cx="498" cy="208" r="28" />
+        <circle class="truck__hub" cx="498" cy="208" r="10" />
+      </svg>
+
+      <dl class="readout">
+        <div>
+          <dt>Volumen</dt>
+          <dd>{{ calculator.totalVolume() | number: '1.1-1' }} m³</dd>
+        </div>
+        <div>
+          <dt>Ocupación</dt>
+          <dd>{{ calculator.fillRatio() | percent }}</dd>
+        </div>
+        <div>
+          <dt>Vehículo</dt>
+          <dd>
+            {{ calculator.totalItems() === 0 ? 'Por definir' : calculator.vehicle().name }}
+          </dd>
+        </div>
+        <div>
+          <dt>Viajes</dt>
+          <dd>{{ calculator.totalItems() === 0 ? '—' : calculator.trips() }}</dd>
+        </div>
+      </dl>
+
+      <p class="fare">
+        <span>Tarifa referencial</span>
+        <strong>S/ {{ calculator.estimatedFare() | number: '1.0-0' }}</strong>
+      </p>
+    </div>
+  </div>
+</section>

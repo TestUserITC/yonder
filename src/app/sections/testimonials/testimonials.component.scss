@@ -1,0 +1,67 @@
+.testimonials {
+  padding: var(--section-space) var(--gutter);
+  background: var(--kraft-deep);
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.note {
+  position: relative;
+  margin: 0;
+  padding: 2.25rem 1.5rem 1.5rem;
+  background: var(--paper);
+  rotate: -1.2deg;
+
+  &:nth-child(2) {
+    margin-top: 2.5rem;
+    rotate: 1deg;
+  }
+
+  &:nth-child(3) {
+    rotate: -0.5deg;
+  }
+
+  // The piece of tape holding each note to the box.
+  &::before {
+    content: '';
+    position: absolute;
+    top: -0.8rem;
+    left: 50%;
+    width: 6.5rem;
+    height: 1.6rem;
+    background: rgb(240 78 20 / 80%);
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  blockquote {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+    border-top: 2px solid var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .notes {
+    grid-template-columns: 1fr;
+  }
+
+  .note:nth-child(2) {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,27 @@
+<section id="cobertura" class="coverage">
+  <span class="section-ref">Manifiesto de zonas</span>
+  <h2 class="section-title">¿Hasta dónde es "allá"?</h2>
+
+  <div appReveal class="coverage__scroll">
+    <table class="zones">
+      <thead>
+        <tr>
+          <th scope="col">Zona</th>
+          <th scope="col">Destinos</th>
+          <th scope="col">Plazo mínimo</th>
+          <th scope="col">Recargo</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (zone of zones; track zone.zone) {
+          <tr>
+            <td class="zones__code">{{ zone.zone }}</td>
+            <td>{{ zone.districts }}</td>
+            <td>{{ zone.leadTime }}</td>
+            <td>{{ zone.surcharge }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

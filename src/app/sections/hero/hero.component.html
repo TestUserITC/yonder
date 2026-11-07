@@ -1,0 +1,39 @@
+<section id="inicio" class="hero">
+  <p class="hero__wordmark" aria-hidden="true">
+    @for (letter of 'YONDER'.split(''); track $index) {
+      <span [style.animation-delay.ms]="$index * 70">{{ letter }}</span>
+    }
+  </p>
+
+  <div class="hero__body">
+    <div class="hero__copy">
+      <h1 class="hero__title">Llevamos lo tuyo de aquí hasta allá.</h1>
+      <p class="hero__lead">
+        Mudanzas de hogar y oficina en Lima y todo el Perú, con el volumen calculado antes de cargar
+        y cada caja rotulada para que sepas dónde está.
+      </p>
+      <div class="hero__actions">
+        <a class="button" href="#calculadora">Calcula tu camión</a>
+        <a class="button button--ghost" href="#cotizacion">Pide una cotización</a>
+      </div>
+    </div>
+
+    <aside class="manifest" aria-label="Guía de carga">
+      <p class="manifest__heading">
+        <span>Guía de carga</span>
+        <span>N.º 000-417</span>
+      </p>
+      <dl class="manifest__rows">
+        @for (row of manifest; track row.label) {
+          <div class="manifest__row">
+            <dt>{{ row.label }}</dt>
+            <dd>{{ row.value }}</dd>
+          </div>
+        }
+      </dl>
+      <span class="manifest__stamp" aria-hidden="true">Frágil</span>
+    </aside>
+  </div>
+
+  <span class="hero__arrows" aria-hidden="true">↑↑ Este lado arriba</span>
+</section>

@@ -1,0 +1,72 @@
+<section id="cotizacion" class="quote">
+  <div class="quote__intro">
+    <span class="section-ref">Última parada</span>
+    <h2 class="section-title">Dinos de dónde a dónde.</h2>
+    <p>Con esos datos armamos tu cotización. Mientras antes nos escribas, más opciones de fecha tendrás.</p>
+  </div>
+
+  @if (submitted()) {
+    <div class="quote__done" role="status">
+      <span class="quote__stamp" aria-hidden="true">Recibido</span>
+      <p>Tu solicitud pasó la validación. Este sitio es una demostración, así que no se envió a ningún lado.</p>
+      <button type="button" class="button" (click)="startOver()">Empezar de nuevo</button>
+    </div>
+  } @else {
+    <form class="form" [formGroup]="form" novalidate (ngSubmit)="submit()">
+      <label class="field">
+        <span>Nombre</span>
+        <input type="text" formControlName="name" autocomplete="name" />
+        @if (showsError('name')) {
+          <small>Escribe al menos 3 caracteres.</small>
+        }
+      </label>
+
+      <label class="field">
+        <span>Celular</span>
+        <input type="tel" formControlName="phone" autocomplete="tel" placeholder="9XXXXXXXX" />
+        @if (showsError('phone')) {
+          <small>Debe tener 9 dígitos y empezar con 9.</small>
+        }
+      </label>
+
+      <label class="field field--wide">
+        <span>Correo</span>
+        <input type="email" formControlName="email" autocomplete="email" />
+        @if (showsError('email')) {
+          <small>Escribe un correo válido.</small>
+        }
+      </label>
+
+      <label class="field">
+        <span>Desde</span>
+        <input type="text" formControlName="origin" placeholder="Distrito de origen" />
+        @if (showsError('origin')) {
+          <small>Indica el origen.</small>
+        }
+      </label>
+
+      <label class="field">
+        <span>Hasta</span>
+        <input type="text" formControlName="destination" placeholder="Distrito de destino" />
+        @if (showsError('destination')) {
+          <small>Indica el destino.</small>
+        }
+      </label>
+
+      <label class="field field--wide">
+        <span>Fecha de mudanza</span>
+        <input type="date" formControlName="moveDate" />
+        @if (showsError('moveDate')) {
+          <small>Elige una fecha.</small>
+        }
+      </label>
+
+      <label class="field field--wide">
+        <span>Detalles (opcional)</span>
+        <textarea rows="3" formControlName="details" placeholder="Pisos, ascensor, piezas delicadas..."></textarea>
+      </label>
+
+      <button type="submit" class="button quote__submit">Solicitar cotización</button>
+    </form>
+  }
+</section>

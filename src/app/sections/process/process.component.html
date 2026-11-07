@@ -1,0 +1,14 @@
+<section id="proceso" class="process">
+  <span class="section-ref">Hoja de ruta</span>
+  <h2 class="section-title">Cuatro paradas, ninguna sorpresa.</h2>
+
+  <ol class="route">
+    @for (step of steps; track step.title) {
+      <li appReveal class="stop" [style.transition-delay.ms]="$index * 110">
+        <span class="stop__number">{{ $index + 1 | number: '2.0-0' }}</span>
+        <h3 class="stop__title">{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </li>
+    }
+  </ol>
+</section>

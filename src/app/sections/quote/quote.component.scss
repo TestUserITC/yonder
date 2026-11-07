@@ -1,0 +1,99 @@
+.quote {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: var(--section-space) var(--gutter);
+  background: var(--signal);
+}
+
+.quote__intro p {
+  max-width: 40ch;
+  margin-top: 1.25rem;
+}
+
+.form,
+.quote__done {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  background: var(--paper);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+
+  span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    background: #fff;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  small {
+    color: #a32b00;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  &--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.quote__submit {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.quote__done {
+  align-self: start;
+
+  p {
+    margin: 1.5rem 0;
+  }
+}
+
+.quote__stamp {
+  display: inline-block;
+  padding: 0.1rem 0.8rem;
+  border: 4px solid var(--signal);
+  color: var(--signal);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  transform: rotate(-5deg);
+}
+
+@media (max-width: 860px) {
+  .quote {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+}

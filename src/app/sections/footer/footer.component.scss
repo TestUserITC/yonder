@@ -1,0 +1,30 @@
+.footer {
+  padding: clamp(2.5rem, 5vw, 4rem) var(--gutter) 0;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.footer__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.footer__wordmark {
+  margin-top: 2rem;
+  margin-bottom: -0.12em;
+  color: var(--kraft);
+  font-family: var(--font-display);
+  font-size: 30vw;
+  line-height: 0.85;
+  user-select: none;
+}
+
+@media (max-width: 700px) {
+  .footer__row {
+    grid-template-columns: 1fr;
+  }
+}

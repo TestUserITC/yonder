@@ -1,0 +1,15 @@
+<section id="preguntas" class="faq">
+  <div>
+    <span class="section-ref">Antes de cerrar la caja</span>
+    <h2 class="section-title">Preguntas frecuentes.</h2>
+  </div>
+
+  <div class="faq__list">
+    @for (entry of entries; track entry.question) {
+      <details class="entry">
+        <summary>{{ entry.question }}</summary>
+        <p>{{ entry.answer }}</p>
+      </details>
+    }
+  </div>
+</section>
