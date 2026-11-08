@@ -1,7 +1,23 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
 
 const PERUVIAN_MOBILE_PATTERN = /^9\d{8}$/;
+
+const pad2 = (n: number) => n.toString().padStart(2, '0');
+function localDateYYYYMMDD(date: Date): string {
+  return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+}
+function todayLocalDateStr(): string {
+  return localDateYYYYMMDD(new Date());
+}
+const dateNotInPastValidator: ValidatorFn = (control) => {
+  const value = (control.value ?? '').toString().trim();
+  if (!value) {
+    return null;
+  }
+  const today = todayLocalDateStr();
+  return value < today ? { datePast: true } : null;
+};
 
 @Component({
   selector: 'app-quote',
@@ -19,9 +35,11 @@ export class QuoteComponent {
     email: ['', [Validators.required, Validators.email]],
     origin: ['', Validators.required],
     destination: ['', Validators.required],
-    moveDate: ['', Validators.required],
+    moveDate: ['', [Validators.required, dateNotInPastValidator]],
     details: [''],
   });
+
+  protected readonly todayStr = todayLocalDateStr();
 
   protected readonly submitted = signal(false);
 

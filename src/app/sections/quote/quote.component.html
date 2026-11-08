@@ -55,9 +55,13 @@
 
       <label class="field field--wide">
         <span>Fecha de mudanza</span>
-        <input type="date" formControlName="moveDate" />
+        <input type="date" formControlName="moveDate" [attr.min]="todayStr" />
         @if (showsError('moveDate')) {
-          <small>Elige una fecha.</small>
+          @if (form.controls.moveDate.hasError('required')) {
+            <small>Elige una fecha.</small>
+          } @else if (form.controls.moveDate.hasError('datePast')) {
+            <small>La fecha no puede ser anterior a hoy.</small>
+          }
         }
       </label>
 
