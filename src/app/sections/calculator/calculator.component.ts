@@ -2,7 +2,7 @@ import { DecimalPipe, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
 import { INVENTORY_ITEMS } from '../../data/inventory.data';
-import { LoadCalculatorService } from '../../services/load-calculator.service';
+import { LoadCalculatorService, MAX_ITEM_QUANTITY } from '../../services/load-calculator.service';
 
 interface CargoCell {
   x: number;
@@ -27,6 +27,7 @@ const CARGO_ORIGIN_Y = 32;
 export class CalculatorComponent {
   protected readonly calculator = inject(LoadCalculatorService);
   protected readonly items = INVENTORY_ITEMS;
+  protected readonly maxItemQuantity = MAX_ITEM_QUANTITY;
 
   /** Cargo grid for the truck drawing, loaded from the cab toward the doors, bottom row first. */
   protected readonly cells = computed<CargoCell[]>(() => {
