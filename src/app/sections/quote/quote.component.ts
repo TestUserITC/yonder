@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 const PERUVIAN_MOBILE_PATTERN = /^9\d{8}$/;
 
@@ -17,6 +17,15 @@ const dateNotInPastValidator: ValidatorFn = (control) => {
   }
   const today = todayLocalDateStr();
   return value < today ? { datePast: true } : null;
+};
+
+const differentPlacesValidator: ValidatorFn = (control: AbstractControl) => {
+  const origin = String(control.get('origin')?.value ?? '').trim().toLowerCase();
+  const destination = String(control.get('destination')?.value ?? '').trim().toLowerCase();
+  if (!origin || !destination) {
+    return null;
+  }
+  return origin === destination ? { samePlace: true } : null;
 };
 
 @Component({
@@ -37,7 +46,7 @@ export class QuoteComponent {
     destination: ['', Validators.required],
     moveDate: ['', [Validators.required, dateNotInPastValidator]],
     details: [''],
-  });
+  }, { validators: differentPlacesValidator });
 
   protected readonly todayStr = todayLocalDateStr();
 

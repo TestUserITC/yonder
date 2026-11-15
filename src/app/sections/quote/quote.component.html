@@ -51,6 +51,9 @@
         @if (showsError('destination')) {
           <small>Indica el destino.</small>
         }
+        @if (form.hasError('samePlace') && (form.controls.destination.touched || submitted())) {
+          <small>El destino debe ser distinto del origen.</small>
+        }
       </label>
 
       <label class="field field--wide">
