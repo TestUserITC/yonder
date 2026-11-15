@@ -25,6 +25,7 @@
               <button
                 type="button"
                 [attr.aria-label]="'Agregar ' + item.name"
+                [disabled]="calculator.quantityOf(item.id) >= maxItemQuantity"
                 (click)="calculator.increment(item.id)"
               >
                 +
