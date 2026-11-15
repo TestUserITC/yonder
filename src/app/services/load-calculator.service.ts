@@ -2,6 +2,8 @@ import { Injectable, computed, signal } from '@angular/core';
 
 import { INVENTORY_ITEMS, VEHICLES, Vehicle } from '../data/inventory.data';
 
+export const MAX_ITEM_QUANTITY = 20;
+
 @Injectable({ providedIn: 'root' })
 export class LoadCalculatorService {
   private readonly quantities = signal<Readonly<Record<string, number>>>({});
@@ -36,7 +38,11 @@ export class LoadCalculatorService {
   }
 
   increment(itemId: string): void {
-    this.setQuantity(itemId, this.quantityOf(itemId) + 1);
+    const current = this.quantityOf(itemId);
+    if (current >= MAX_ITEM_QUANTITY) {
+      return;
+    }
+    this.setQuantity(itemId, current + 1);
   }
 
   decrement(itemId: string): void {
