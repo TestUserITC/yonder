@@ -49,7 +49,11 @@
         <span>Hasta</span>
         <input type="text" formControlName="destination" placeholder="Distrito de destino" />
         @if (showsError('destination')) {
-          <small>Indica el destino.</small>
+          @if (form.controls.destination.hasError('required')) {
+            <small>Indica el destino.</small>
+          } @else if (form.controls.destination.hasError('sameLocation')) {
+            <small>El destino debe ser distinto del origen.</small>
+          }
         }
       </label>
 
