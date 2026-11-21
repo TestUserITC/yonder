@@ -1,5 +1,5 @@
 import { DecimalPipe, PercentPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, effect } from '@angular/core';
 
 import { INVENTORY_ITEMS } from '../../data/inventory.data';
 import { LoadCalculatorService } from '../../services/load-calculator.service';
@@ -28,10 +28,22 @@ export class CalculatorComponent {
   protected readonly calculator = inject(LoadCalculatorService);
   protected readonly items = INVENTORY_ITEMS;
 
+  protected readonly hasNegativeInput = signal(false);
+  protected readonly ratio = computed(() => this.calculator.fillRatio());
+  protected readonly updateNegativeFlag = effect(() => {
+    this.hasNegativeInput.set(this.ratio() < 0);
+  });
+
   /** Cargo grid for the truck drawing, loaded from the cab toward the doors, bottom row first. */
   protected readonly cells = computed<CargoCell[]>(() => {
     const totalCells = CARGO_COLUMNS * CARGO_ROWS;
-    const filledCells = Math.ceil(this.calculator.fillRatio() * totalCells);
+    const ratio = this.ratio();
+
+    if (ratio < 0) {
+      return [];
+    }
+
+    const filledCells = Math.ceil(ratio * totalCells);
 
     return Array.from({ length: totalCells }, (_, index) => {
       const column = Math.floor(index / CARGO_ROWS);
