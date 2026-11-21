@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 const PERUVIAN_MOBILE_PATTERN = /^9\d{8}$/;
 
@@ -19,6 +19,34 @@ const dateNotInPastValidator: ValidatorFn = (control) => {
   return value < today ? { datePast: true } : null;
 };
 
+const differentOriginDestinationValidator: ValidatorFn = (group: AbstractControl) => {
+  const originControl = group.get('origin');
+  const destinationControl = group.get('destination');
+  if (!originControl || !destinationControl) {
+    return null;
+  }
+
+  const origin = (originControl.value ?? '').toString().trim().toLowerCase();
+  const destination = (destinationControl.value ?? '').toString().trim().toLowerCase();
+
+  const same = !!origin && !!destination && origin === destination;
+  const existing = destinationControl.errors ?? {};
+
+  if (same) {
+    if (!existing['sameLocation']) {
+      destinationControl.setErrors({ ...existing, sameLocation: true });
+    }
+  } else {
+    if (existing['sameLocation']) {
+      const { sameLocation, ...rest } = existing as Record<string, any>;
+      const newErrors = Object.keys(rest).length ? rest : null;
+      destinationControl.setErrors(newErrors);
+    }
+  }
+
+  return null;
+};
+
 @Component({
   selector: 'app-quote',
   imports: [ReactiveFormsModule],
@@ -29,15 +57,18 @@ const dateNotInPastValidator: ValidatorFn = (control) => {
 export class QuoteComponent {
   private readonly formBuilder = inject(FormBuilder);
 
-  protected readonly form = this.formBuilder.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-    phone: ['', [Validators.required, Validators.pattern(PERUVIAN_MOBILE_PATTERN)]],
-    email: ['', [Validators.required, Validators.email]],
-    origin: ['', Validators.required],
-    destination: ['', Validators.required],
-    moveDate: ['', [Validators.required, dateNotInPastValidator]],
-    details: [''],
-  });
+  protected readonly form = this.formBuilder.nonNullable.group(
+    {
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      phone: ['', [Validators.required, Validators.pattern(PERUVIAN_MOBILE_PATTERN)]],
+      email: ['', [Validators.required, Validators.email]],
+      origin: ['', Validators.required],
+      destination: ['', Validators.required],
+      moveDate: ['', [Validators.required, dateNotInPastValidator]],
+      details: [''],
+    },
+    { validators: differentOriginDestinationValidator },
+  );
 
   protected readonly todayStr = todayLocalDateStr();
 
