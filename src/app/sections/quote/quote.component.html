@@ -70,6 +70,32 @@
         <textarea rows="3" formControlName="details" placeholder="Pisos, ascensor, piezas delicadas..."></textarea>
       </label>
 
+      @if (calcEstimate()?.isEmpty) {
+        <p class="quote__calc-link"><a href="#calculadora">Calcula tu camión</a></p>
+      } @else if (calcEstimate()) {
+        <div class="quote__estimate" aria-live="polite">
+          <dl class="readout">
+            <div>
+              <dt>Vehículo</dt>
+              <dd>{{ calcEstimate()?.vehicle.name }}</dd>
+            </div>
+            <div>
+              <dt>Volumen</dt>
+              <dd>{{ calcEstimate()?.totalVolumeM3 | number: '1.1-1' }} m³</dd>
+            </div>
+            <div>
+              <dt>Viajes</dt>
+              <dd>{{ calcEstimate()?.trips }}</dd>
+            </div>
+          </dl>
+
+          <p class="fare">
+            <span>Tarifa referencial</span>
+            <strong>S/ {{ calcEstimate()?.refFare | number: '1.0-0' }}</strong>
+          </p>
+        </div>
+      }
+
       <button type="submit" class="button quote__submit">Solicitar cotización</button>
     </form>
   }
