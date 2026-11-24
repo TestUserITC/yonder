@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { LoadCalculatorService, CalculatorEstimate } from '../../services/load-calculator.service';
 
 const PERUVIAN_MOBILE_PATTERN = /^9\d{8}$/;
 
@@ -21,13 +24,16 @@ const dateNotInPastValidator: ValidatorFn = (control) => {
 
 @Component({
   selector: 'app-quote',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DecimalPipe],
   templateUrl: './quote.component.html',
   styleUrl: './quote.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteComponent {
+export class QuoteComponent implements OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly calculator = inject(LoadCalculatorService);
+
+  private subscription: Subscription | null = null;
 
   protected readonly form = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -42,6 +48,18 @@ export class QuoteComponent {
   protected readonly todayStr = todayLocalDateStr();
 
   protected readonly submitted = signal(false);
+
+  protected readonly calcEstimate = signal<CalculatorEstimate | null>(null);
+
+  constructor() {
+    this.subscription = this.calculator.estimate$.subscribe((est) => {
+      this.calcEstimate.set(est);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
 
   protected showsError(controlName: keyof typeof this.form.controls): boolean {
     const control = this.form.controls[controlName];
