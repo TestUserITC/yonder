@@ -1,6 +1,15 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 import { INVENTORY_ITEMS, VEHICLES, Vehicle } from '../data/inventory.data';
+
+export interface CalculatorEstimate {
+  vehicle: Vehicle;
+  totalVolumeM3: number;
+  trips: number;
+  refFare: number;
+  isEmpty: boolean;
+}
 
 @Injectable({ providedIn: 'root' })
 export class LoadCalculatorService {
@@ -30,6 +39,16 @@ export class LoadCalculatorService {
   readonly estimatedFare = computed(() =>
     this.totalItems() === 0 ? 0 : this.vehicle().baseFare * this.trips(),
   );
+
+  readonly estimate = computed<CalculatorEstimate>(() => ({
+    vehicle: this.vehicle(),
+    totalVolumeM3: this.totalVolume(),
+    trips: this.trips(),
+    refFare: this.estimatedFare(),
+    isEmpty: this.totalItems() === 0,
+  }));
+
+  readonly estimate$ = toObservable(this.estimate);
 
   quantityOf(itemId: string): number {
     return this.quantities()[itemId] ?? 0;
